@@ -12,6 +12,11 @@ from services.storage import ContactStorage
 
 
 class ConfirmationModal(ModalScreen[bool]):
+    BINDINGS = [
+        Binding("y", "confirm", "Confirm"),
+        Binding("n", "cancel", "Cancel"),
+    ]
+
     def __init__(self, message: str):
         super().__init__()
         self.message = message
@@ -20,8 +25,8 @@ class ConfirmationModal(ModalScreen[bool]):
         yield Grid(
             Label(self.message),
             Grid(
-                Button("Yes", id="yes", variant="error"),
-                Button("No", id="no", variant="primary"),
+                Button("\\[Y]es", id="yes", variant="error"),
+                Button("\\[N]o", id="no", variant="primary"),
                 id="button-container",
             ),
             id="dialog",
@@ -32,6 +37,12 @@ class ConfirmationModal(ModalScreen[bool]):
             self.dismiss(True)
         else:
             self.dismiss(False)
+
+    def action_confirm(self) -> None:
+        self.dismiss(True)
+
+    def action_cancel(self) -> None:
+        self.dismiss(False)
 
 
 class ContactList(Screen):
@@ -52,7 +63,7 @@ class ContactList(Screen):
             Label("Contacts", id="contacts-title"),
             DataTable(id="contacts-table"),
             Static(
-                "\\[A]dd Contact • \\[D]elete Contact • \\[E]dit Contact • \\[Q]uit",
+                "\\[A]dd • \\[D]elete • \\[E]dit • \\[Q]uit",
                 id="shortcuts-text",
             ),
         )
@@ -241,7 +252,7 @@ class ContactsApp(App):
         padding: 1;
         margin: 0 0 1 0;
         text-align: center;
-        text-style: bold;
+        # text-style: bold;
         color: $text;
         background: $surface;
         dock: bottom;
