@@ -2,7 +2,7 @@ from datetime import datetime
 from textual.app import App, ComposeResult
 from textual.containers import Container, Vertical, Grid
 from textual.screen import Screen, ModalScreen
-from textual.widgets import Button, DataTable, Header, Input, Label, Static
+from textual.widgets import Button, DataTable, Header, Input, Label, Static, Footer
 from textual.binding import Binding
 from textual.worker import Worker, get_current_worker
 import textual
@@ -62,11 +62,8 @@ class ContactList(Screen):
         yield Container(
             Label("Contacts", id="contacts-title"),
             DataTable(id="contacts-table"),
-            Static(
-                "\\[A]dd • \\[D]elete • \\[E]dit • \\[Q]uit",
-                id="shortcuts-text",
-            ),
         )
+        yield Footer()
 
     def on_mount(self) -> None:
         table = self.query_one("#contacts-table", DataTable)
