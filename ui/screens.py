@@ -20,8 +20,9 @@ class ConfirmationModal(ModalScreen[bool]):
         yield Grid(
             Label(self.message),
             Grid(
-                Button("Yes", variant="error", id="yes"),
-                Button("No", variant="primary", id="no"),
+                Button("Yes", id="yes", variant="error"),
+                Button("No", id="no", variant="primary"),
+                # Button("Cancel", id="cancel"),
                 id="button-container",
             ),
             id="dialog",
@@ -30,38 +31,10 @@ class ConfirmationModal(ModalScreen[bool]):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "yes":
             self.dismiss(True)
+        # elif event.button.id == "cancel":
+        #     self.dismiss(False)
         else:
             self.dismiss(False)
-
-    CSS = """
-    #dialog {
-        padding: 1;
-        width: 60;
-        height: auto;
-        border: thick $background 80%;
-        background: $surface;
-        grid-size: 1;
-        grid-gutter: 1;
-        grid-rows: 1fr 3;
-        align: center middle;
-    }
-
-    #button-container {
-        width: 100%;
-        height: 100%;
-        grid-size: 2;
-        grid-gutter: 1;
-        align: center middle;
-    }
-
-    #dialog Label {
-        color: $text;
-        text-align: center;
-        width: 100%;
-        height: auto;
-        padding: 1;
-    }
-    """
 
 
 class ContactList(Screen):
@@ -89,7 +62,7 @@ class ContactList(Screen):
 
     def on_mount(self) -> None:
         table = self.query_one("#contacts-table", DataTable)
-        table.add_columns("Name", "Phone", "Email", "Last Contacted")
+        table.add_columns("Name", "Phone", "Email", "Last Contacted", "Notes")
         self.refresh_contacts()
 
     def refresh_contacts(self) -> None:
@@ -100,11 +73,8 @@ class ContactList(Screen):
                 contact.name,
                 contact.phone,
                 contact.email or "",
-                (
-                    contact.last_contacted.strftime("%Y-%m-%d")
-                    if contact.last_contacted
-                    else ""
-                ),
+                contact.last_contacted.strftime("%Y-%m-%d") or "",
+                contact.notes or "",
             )
 
     def action_add_contact(self) -> None:
@@ -285,13 +255,39 @@ class ContactsApp(App):
         width: 100%;
     }
 
-    Button {
-        margin: 1;
-        width: 100%;
-    }
-
     ConfirmationModal {
         align: center middle;
+    }
+
+    #dialog {
+        padding: 1;
+        width: 60;
+        height: 60%;
+        border: thick $background 80%;
+        background: $surface;
+        grid-size: 1;
+        grid-gutter: 1;
+        grid-rows: 1fr 3;
+        align: center middle;
+    }
+
+    #button-container {
+        grid-size: 2;
+        grid-gutter: 1;
+        align: center middle;
+    }
+
+    #dialog Label {
+        color: $text;
+        text-align: center;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1;
+    }
+
+    Button {
+        height: 3;
+        border: none;
     }
     """
 
