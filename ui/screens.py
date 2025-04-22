@@ -22,7 +22,6 @@ class ConfirmationModal(ModalScreen[bool]):
             Grid(
                 Button("Yes", id="yes", variant="error"),
                 Button("No", id="no", variant="primary"),
-                # Button("Cancel", id="cancel"),
                 id="button-container",
             ),
             id="dialog",
@@ -31,8 +30,6 @@ class ConfirmationModal(ModalScreen[bool]):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "yes":
             self.dismiss(True)
-        # elif event.button.id == "cancel":
-        #     self.dismiss(False)
         else:
             self.dismiss(False)
 
