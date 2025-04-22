@@ -15,10 +15,6 @@ A modern terminal user interface (TUI) application for managing contacts, built 
 2. Clone this repository
 3. Install dependencies:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
 ## Usage
 
 Run the application:
