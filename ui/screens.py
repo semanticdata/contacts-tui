@@ -1,12 +1,67 @@
 from datetime import datetime
 from textual.app import App, ComposeResult
-from textual.containers import Container, Vertical
-from textual.screen import Screen
+from textual.containers import Container, Vertical, Grid
+from textual.screen import Screen, ModalScreen
 from textual.widgets import Button, DataTable, Header, Input, Label, Static
 from textual.binding import Binding
+from textual.worker import Worker, get_current_worker
+import textual
 
 from models.contact import Contact
 from services.storage import ContactStorage
+
+
+class ConfirmationModal(ModalScreen[bool]):
+    def __init__(self, message: str):
+        super().__init__()
+        self.message = message
+
+    def compose(self) -> ComposeResult:
+        yield Grid(
+            Label(self.message),
+            Grid(
+                Button("Yes", variant="error", id="yes"),
+                Button("No", variant="primary", id="no"),
+                id="button-container",
+            ),
+            id="dialog",
+        )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "yes":
+            self.dismiss(True)
+        else:
+            self.dismiss(False)
+
+    CSS = """
+    #dialog {
+        padding: 1;
+        width: 60;
+        height: auto;
+        border: thick $background 80%;
+        background: $surface;
+        grid-size: 1;
+        grid-gutter: 1;
+        grid-rows: 1fr 3;
+        align: center middle;
+    }
+
+    #button-container {
+        width: 100%;
+        height: 100%;
+        grid-size: 2;
+        grid-gutter: 1;
+        align: center middle;
+    }
+
+    #dialog Label {
+        color: $text;
+        text-align: center;
+        width: 100%;
+        height: auto;
+        padding: 1;
+    }
+    """
 
 
 class ContactList(Screen):
@@ -26,7 +81,6 @@ class ContactList(Screen):
         yield Container(
             Label("Contacts", id="contacts-title"),
             DataTable(id="contacts-table"),
-            # Label("Keyboard Shortcuts", id="shortcuts-title"),
             Static(
                 "\\[A]dd Contact • \\[D]elete Contact • \\[E]dit Contact • \\[Q]uit",
                 id="shortcuts-text",
@@ -60,19 +114,37 @@ class ContactList(Screen):
         table = self.query_one("#contacts-table", DataTable)
         if table.cursor_coordinate is not None:
             row = table.cursor_coordinate.row
-            contact_name = table.get_cell_at((row, 0))  # Name is in the first column
-            if contact_name and self.storage.delete_contact(contact_name):
-                self.refresh_contacts()
+            contact_name = table.get_cell_at((row, 0))
+            if contact_name:
+                self.show_delete_confirmation(contact_name)
+
+    @textual.work(exclusive=True)
+    async def show_delete_confirmation(self, contact_name: str) -> None:
+        confirm = await self.app.push_screen_wait(
+            ConfirmationModal(
+                f"Are you sure you want to delete contact '{contact_name}'?"
+            )
+        )
+        if confirm and self.storage.delete_contact(contact_name):
+            self.refresh_contacts()
 
     def action_edit_contact(self) -> None:
         table = self.query_one("#contacts-table", DataTable)
         if table.cursor_coordinate is not None:
             row = table.cursor_coordinate.row
-            contact_name = table.get_cell_at((row, 0))  # Name is in the first column
+            contact_name = table.get_cell_at((row, 0))
             if contact_name:
                 contact = self.storage.get_contact_by_name(contact_name)
                 if contact:
                     self.app.push_screen(EditContact(self.storage, contact))
+
+    @textual.work(exclusive=True)
+    async def action_quit(self) -> None:
+        confirm = await self.app.push_screen_wait(
+            ConfirmationModal("Are you sure you want to quit?")
+        )
+        if confirm:
+            self.app.exit()
 
 
 class AddContact(Screen):
@@ -110,7 +182,6 @@ class AddContact(Screen):
                     last_contacted=datetime.now(),
                 )
                 self.storage.add_contact(contact)
-                # Get the contact list screen by type instead of index
                 contact_list = next(
                     screen
                     for screen in self.app.screen_stack
@@ -217,6 +288,10 @@ class ContactsApp(App):
     Button {
         margin: 1;
         width: 100%;
+    }
+
+    ConfirmationModal {
+        align: center middle;
     }
     """
 
