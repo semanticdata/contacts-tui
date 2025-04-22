@@ -144,8 +144,12 @@ class AddContact(Screen):
                 Input(placeholder="Phone", id="phone"),
                 Input(placeholder="Email (optional)", id="email"),
                 Input(placeholder="Notes (optional)", id="notes"),
-                Button("Save", variant="primary", id="save"),
-                Button("Cancel", variant="default", id="cancel"),
+                Vertical(
+                    Button("Save", variant="primary", id="save"),
+                    Button("Cancel", variant="default", id="cancel"),
+                    classes="button-container",
+                ),
+                classes="form-container",
             ),
         )
 
@@ -203,8 +207,12 @@ class EditContact(Screen):
                 Input(id="phone", value=self.contact.phone),
                 Input(id="email", value=self.contact.email or ""),
                 Input(id="notes", value=self.contact.notes or ""),
-                Button("Save", variant="primary", id="save"),
-                Button("Cancel", variant="default", id="cancel"),
+                Vertical(
+                    Button("Save", variant="primary", id="save"),
+                    Button("Cancel", variant="default", id="cancel"),
+                    classes="button-container",
+                ),
+                classes="form-container",
             ),
         )
 
@@ -318,6 +326,42 @@ class ContactsApp(App):
     Button {
         height: 3;
         border: none;
+    }
+
+    .form-container {
+        # width: 100;
+        # margin-top: 2;
+        # height: auto;
+        # width: 100%;
+        # padding: 2;
+        border: tall $primary;
+        background: $surface;
+    }
+
+    .form-container Label {
+        text-align: center;
+        text-style: bold;
+        width: 100%;
+        # padding: 1;
+        # margin-bottom: 1;
+        # border-bottom: heavy $primary;
+    }
+
+    .form-container Input {
+        margin: 1 2;
+        border: tall $primary-darken-2;
+    }
+
+    .button-container {
+        layout: horizontal;
+        width: 100%;
+        height: auto;
+        align: center middle;
+        padding: 1;
+    }
+
+    .button-container Button {
+        margin: 0 1;
     }
     """
 
