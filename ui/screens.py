@@ -126,6 +126,11 @@ class ContactList(Screen):
 
 
 class AddContact(Screen):
+    BINDINGS = [
+        Binding("ctrl+s", "save", "Save"),
+        Binding("ctrl+c", "cancel", "Cancel"),
+    ]
+
     def __init__(self, storage: ContactStorage):
         super().__init__()
         self.storage = storage
@@ -146,32 +151,43 @@ class AddContact(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "save":
-            name = self.query_one("#name", Input).value
-            phone = self.query_one("#phone", Input).value
-            email = self.query_one("#email", Input).value
-            notes = self.query_one("#notes", Input).value
-
-            if name and phone:
-                contact = Contact(
-                    name=name,
-                    phone=phone,
-                    email=email if email else None,
-                    notes=notes if notes else None,
-                    last_contacted=datetime.now(),
-                )
-                self.storage.add_contact(contact)
-                contact_list = next(
-                    screen
-                    for screen in self.app.screen_stack
-                    if isinstance(screen, ContactList)
-                )
-                contact_list.refresh_contacts()
-                self.app.pop_screen()
+            self.action_save()
         elif event.button.id == "cancel":
+            self.action_cancel()
+
+    def action_save(self) -> None:
+        name = self.query_one("#name", Input).value
+        phone = self.query_one("#phone", Input).value
+        email = self.query_one("#email", Input).value
+        notes = self.query_one("#notes", Input).value
+
+        if name and phone:
+            contact = Contact(
+                name=name,
+                phone=phone,
+                email=email if email else None,
+                notes=notes if notes else None,
+                last_contacted=datetime.now(),
+            )
+            self.storage.add_contact(contact)
+            contact_list = next(
+                screen
+                for screen in self.app.screen_stack
+                if isinstance(screen, ContactList)
+            )
+            contact_list.refresh_contacts()
             self.app.pop_screen()
+
+    def action_cancel(self) -> None:
+        self.app.pop_screen()
 
 
 class EditContact(Screen):
+    BINDINGS = [
+        Binding("ctrl+s", "save", "Save"),
+        Binding("ctrl+c", "cancel", "Cancel"),
+    ]
+
     def __init__(self, storage: ContactStorage, contact: Contact):
         super().__init__()
         self.storage = storage
@@ -194,29 +210,35 @@ class EditContact(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "save":
-            name = self.query_one("#name", Input).value
-            phone = self.query_one("#phone", Input).value
-            email = self.query_one("#email", Input).value
-            notes = self.query_one("#notes", Input).value
-
-            if name and phone:
-                updated_contact = Contact(
-                    name=name,
-                    phone=phone,
-                    email=email if email else None,
-                    notes=notes if notes else None,
-                    last_contacted=datetime.now(),
-                )
-                self.storage.update_contact(self.original_name, updated_contact)
-                contact_list = next(
-                    screen
-                    for screen in self.app.screen_stack
-                    if isinstance(screen, ContactList)
-                )
-                contact_list.refresh_contacts()
-                self.app.pop_screen()
+            self.action_save()
         elif event.button.id == "cancel":
+            self.action_cancel()
+
+    def action_save(self) -> None:
+        name = self.query_one("#name", Input).value
+        phone = self.query_one("#phone", Input).value
+        email = self.query_one("#email", Input).value
+        notes = self.query_one("#notes", Input).value
+
+        if name and phone:
+            updated_contact = Contact(
+                name=name,
+                phone=phone,
+                email=email if email else None,
+                notes=notes if notes else None,
+                last_contacted=datetime.now(),
+            )
+            self.storage.update_contact(self.original_name, updated_contact)
+            contact_list = next(
+                screen
+                for screen in self.app.screen_stack
+                if isinstance(screen, ContactList)
+            )
+            contact_list.refresh_contacts()
             self.app.pop_screen()
+
+    def action_cancel(self) -> None:
+        self.app.pop_screen()
 
 
 class ContactsApp(App):
