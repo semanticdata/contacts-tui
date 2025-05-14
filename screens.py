@@ -7,8 +7,8 @@ from textual.binding import Binding
 from textual.worker import Worker, get_current_worker
 import textual
 
-from models.contact import Contact
-from services.storage import ContactStorage
+from models import Contact
+from storage import ContactStorage
 
 
 class ConfirmationModal(ModalScreen[bool]):

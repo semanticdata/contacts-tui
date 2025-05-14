@@ -1,6 +1,6 @@
 import json
 from typing import List, Optional
-from models.contact import Contact
+from models import Contact
 from config import CONTACTS_FILE
 
 

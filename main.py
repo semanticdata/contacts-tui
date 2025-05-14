@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from ui.screens import ContactsApp
+from screens import ContactsApp
 from config import APP_DATA_DIR
 
 def main():
