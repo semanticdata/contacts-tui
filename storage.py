@@ -1,7 +1,8 @@
 import json
-from typing import List, Optional
-from models import Contact
 import os
+from typing import List, Optional
+
+from models import Contact
 
 
 class ContactStorage:

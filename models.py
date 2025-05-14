@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
+
 from pydantic import BaseModel, Field
-from pydantic.json import timedelta_isoformat
 
 
 class Contact(BaseModel):

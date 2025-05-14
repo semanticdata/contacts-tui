@@ -1,11 +1,11 @@
 from datetime import datetime
-from textual.app import App, ComposeResult
-from textual.containers import Container, Vertical, Grid
-from textual.screen import Screen, ModalScreen
-from textual.widgets import Button, DataTable, Header, Input, Label, Static, Footer
-from textual.binding import Binding
-from textual.worker import Worker, get_current_worker
+
 import textual
+from textual.app import App, ComposeResult
+from textual.binding import Binding
+from textual.containers import Container, Grid, Vertical
+from textual.screen import ModalScreen, Screen
+from textual.widgets import Button, DataTable, Footer, Header, Input, Label
 
 from models import Contact
 from storage import ContactStorage
