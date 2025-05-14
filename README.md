@@ -1,4 +1,4 @@
-# Contacts TUI
+# Textual Contacts
 
 A modern terminal user interface (TUI) application for managing contacts, built with Python, Pydantic, and Textual.
 
@@ -13,7 +13,7 @@ A modern terminal user interface (TUI) application for managing contacts, built 
 
 1. Ensure you have Python 3.12 or later installed
 2. Clone this repository
-3. Install dependencies:
+3. Install dependencies
 
 ## Usage
 
