@@ -9,5 +9,6 @@ wheels/
 # Virtual environments
 .venv
 
-# Textual Logs
+# Generated files
 *.log
+contacts.json

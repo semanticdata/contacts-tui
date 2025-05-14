@@ -1,24 +1,25 @@
 import json
 from typing import List, Optional
 from models import Contact
-from config import CONTACTS_FILE
+import os
 
 
 class ContactStorage:
     def __init__(self):
         self.contacts: List[Contact] = []
+        self.contacts_file = os.path.join(os.path.dirname(__file__), "contacts.json")
         self.load_contacts()
 
     def load_contacts(self) -> None:
         try:
-            with open(CONTACTS_FILE, 'r') as f:
+            with open(self.contacts_file, "r") as f:
                 contacts_data = json.load(f)
                 self.contacts = [Contact.from_json(c) for c in contacts_data]
         except FileNotFoundError:
             self.contacts = []
 
     def save_contacts(self) -> None:
-        with open(CONTACTS_FILE, 'w') as f:
+        with open(self.contacts_file, "w") as f:
             contacts_data = [json.loads(c.json()) for c in self.contacts]
             json.dump(contacts_data, f, indent=2)
 
