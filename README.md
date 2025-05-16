@@ -9,18 +9,12 @@ A modern terminal user interface (TUI) application for managing contacts, built 
 - Data validation using Pydantic
 - Modern UI components with Textual
 
-## Installation
-
-1. Ensure you have Python 3.12 or later installed
-2. Clone this repository
-3. Install dependencies
-
 ## Usage
 
 Run the application:
 
 ```bash
-python main.py
+uv run main.py
 ```
 
 Keyboard shortcuts:
@@ -29,6 +23,13 @@ Keyboard shortcuts:
 - `d`: Delete selected contact
 - `e`: Edit selected contact
 - `q`: Quit application
+
+## Useful Commands
+
+- `uv run ruff check`: Check code for linting errors
+- `uv run ruff check --fix`: Automatically fix linting errors
+- `uv run ruff format`: Format code according to project style guide
+- `uv run ruff format --check`: Check if code is formatted according to project style guide
 
 ## Implementation Details
 
