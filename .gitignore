@@ -12,3 +12,4 @@ wheels/
 # Generated files
 *.log
 contacts.json
+contacts.db
