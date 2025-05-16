@@ -96,9 +96,7 @@ class ContactList(Screen):
     @textual.work(exclusive=True)
     async def show_delete_confirmation(self, contact_name: str) -> None:
         confirm = await self.app.push_screen_wait(
-            ConfirmationModal(
-                f"Are you sure you want to delete contact '{contact_name}'?"
-            )
+            ConfirmationModal(f"Are you sure you want to delete contact '{contact_name}'?")
         )
         if confirm and self.storage.delete_contact(contact_name):
             self.refresh_contacts()
@@ -115,9 +113,7 @@ class ContactList(Screen):
 
     @textual.work(exclusive=True)
     async def action_quit(self) -> None:
-        confirm = await self.app.push_screen_wait(
-            ConfirmationModal("Are you sure you want to quit?")
-        )
+        confirm = await self.app.push_screen_wait(ConfirmationModal("Are you sure you want to quit?"))
         if confirm:
             self.app.exit()
 
@@ -171,11 +167,7 @@ class AddContact(Screen):
                 last_contacted=datetime.now(),
             )
             self.storage.add_contact(contact)
-            contact_list = next(
-                screen
-                for screen in self.app.screen_stack
-                if isinstance(screen, ContactList)
-            )
+            contact_list = next(screen for screen in self.app.screen_stack if isinstance(screen, ContactList))
             contact_list.refresh_contacts()
             self.app.pop_screen()
 
@@ -234,11 +226,7 @@ class EditContact(Screen):
                 last_contacted=datetime.now(),
             )
             self.storage.update_contact(self.original_name, updated_contact)
-            contact_list = next(
-                screen
-                for screen in self.app.screen_stack
-                if isinstance(screen, ContactList)
-            )
+            contact_list = next(screen for screen in self.app.screen_stack if isinstance(screen, ContactList))
             contact_list.refresh_contacts()
             self.app.pop_screen()
 

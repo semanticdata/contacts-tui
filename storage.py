@@ -1,5 +1,5 @@
-import sqlite3
 import os
+import sqlite3
 from datetime import datetime
 from typing import List, Optional
 
@@ -57,9 +57,7 @@ class ContactStorage:
 
     def get_contact_by_name(self, name: str) -> Optional[Contact]:
         with sqlite3.connect(self.db_file) as conn:
-            cursor = conn.execute(
-                "SELECT * FROM contacts WHERE LOWER(name) = LOWER(?)", (name,)
-            )
+            cursor = conn.execute("SELECT * FROM contacts WHERE LOWER(name) = LOWER(?)", (name,))
             row = cursor.fetchone()
             if row:
                 return Contact(
@@ -84,9 +82,7 @@ class ContactStorage:
                     updated_contact.phone,
                     updated_contact.email,
                     updated_contact.notes,
-                    updated_contact.last_contacted.isoformat()
-                    if updated_contact.last_contacted
-                    else None,
+                    updated_contact.last_contacted.isoformat() if updated_contact.last_contacted else None,
                     name,
                 ),
             )
@@ -95,8 +91,6 @@ class ContactStorage:
 
     def delete_contact(self, name: str) -> bool:
         with sqlite3.connect(self.db_file) as conn:
-            cursor = conn.execute(
-                "DELETE FROM contacts WHERE LOWER(name) = LOWER(?)", (name,)
-            )
+            cursor = conn.execute("DELETE FROM contacts WHERE LOWER(name) = LOWER(?)", (name,))
             conn.commit()
             return cursor.rowcount > 0
