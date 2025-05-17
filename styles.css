@@ -1,0 +1,102 @@
+/* stylelint-disable */
+/* Textual CSS - Custom properties may show as errors in regular CSS linters */
+
+/* Base styles */
+Screen {
+    align: center middle;  /* Textual-specific alignment */
+    overflow: hidden;
+}
+
+Container {
+    height: 100vh;
+    width: 100%;
+    layout: grid;  /* Textual layout system */
+    grid-size: 1;  /* Textual grid system */
+    grid-rows: auto 1fr auto;  /* Textual grid rows */
+    padding: 0 1;
+    overflow: hidden;
+}
+
+/* Contacts list */
+#contacts-title {
+    padding: 1;
+    text-align: center;
+    text-style: bold;
+}
+
+#contacts-table {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Form elements */
+Input {
+    margin: 1;
+    width: 100%;
+}
+
+Button {
+    height: 3;
+    border: none;
+}
+
+/* Dialog/modal styles */
+ConfirmationModal {
+    align: center middle;
+}
+
+#dialog {
+    padding: 1;
+    width: 60;
+    height: 60%;
+    border: thick $background 80%;
+    background: $surface;
+    grid-size: 1;
+    grid-gutter: 1;
+    grid-rows: 1fr 3;
+    align: center middle;
+}
+
+#button-container {
+    grid-size: 2;
+    grid-gutter: 1;
+    align: center middle;
+}
+
+#dialog Label {
+    color: $text;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1;
+}
+
+/* Form container */
+.form-container {
+    border: tall $primary;
+    background: $surface;
+}
+
+.form-container Label {
+    text-align: center;
+    text-style: bold;
+    width: 100%;
+}
+
+.form-container Input {
+    margin: 1 2;
+    border: tall $primary-darken-2;
+}
+
+.button-container {
+    layout: horizontal;
+    width: 100%;
+    height: auto;
+    align: center middle;
+    padding: 1;
+}
+
+.button-container Button {
+    margin: 0 1;
+}

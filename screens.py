@@ -1,4 +1,11 @@
+"""
+Textual UI screens for the Contacts application.
+
+This module contains all the screen classes used in the application.
+"""
+
 from datetime import datetime
+from typing import Optional, cast
 
 import textual
 from textual.app import App, ComposeResult
@@ -12,12 +19,19 @@ from storage import ContactStorage
 
 
 class ConfirmationModal(ModalScreen[bool]):
+    """A modal dialog that asks for confirmation.
+
+    Args:
+        message: The confirmation message to display.
+    """
+
     BINDINGS = [
         Binding("y", "confirm", "Confirm"),
         Binding("n", "cancel", "Cancel"),
     ]
 
     def __init__(self, message: str):
+        """Initialize the confirmation modal."""
         super().__init__()
         self.message = message
 
@@ -46,6 +60,8 @@ class ConfirmationModal(ModalScreen[bool]):
 
 
 class ContactList(Screen):
+    """Main screen displaying the list of contacts."""
+
     BINDINGS = [
         Binding("a", "add_contact", "Add Contact"),
         Binding("d", "delete_contact", "Delete Contact"),
@@ -54,6 +70,7 @@ class ContactList(Screen):
     ]
 
     def __init__(self):
+        """Initialize the contact list screen."""
         super().__init__()
         self.storage = ContactStorage()
 
@@ -123,12 +140,19 @@ class ContactList(Screen):
 
 
 class AddContact(Screen):
+    """Screen for adding a new contact."""
+
     BINDINGS = [
         Binding("ctrl+s", "save", "Save"),
         Binding("ctrl+c", "cancel", "Cancel"),
     ]
 
     def __init__(self, storage: ContactStorage):
+        """Initialize the add contact screen.
+
+        Args:
+            storage: The contact storage instance to use.
+        """
         super().__init__()
         self.storage = storage
 
@@ -184,12 +208,20 @@ class AddContact(Screen):
 
 
 class EditContact(Screen):
+    """Screen for editing an existing contact."""
+
     BINDINGS = [
         Binding("ctrl+s", "save", "Save"),
         Binding("ctrl+c", "cancel", "Cancel"),
     ]
 
     def __init__(self, storage: ContactStorage, contact: Contact):
+        """Initialize the edit contact screen.
+
+        Args:
+            storage: The contact storage instance to use.
+            contact: The contact to edit.
+        """
         super().__init__()
         self.storage = storage
         self.contact = contact
@@ -247,120 +279,14 @@ class EditContact(Screen):
 
 
 class ContactsApp(App):
-    CSS = """
-    Screen {
-        align: center middle;
-        overflow: hidden;
-    }
+    """Main application class for the Contacts app."""
 
-    Container {
-        height: 100vh;
-        width: 100%;
-        layout: grid;
-        grid-size: 1;
-        grid-rows: auto 1fr auto;
-        padding: 0 1;
-        overflow: hidden;
-    }
+    CSS_PATH = "styles.css"  # External CSS file
 
-    #contacts-title {
-        padding: 1;
-        text-align: center;
-        text-style: bold;
-    }
-
-    #contacts-table {
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-    }
-
-    #shortcuts-text {
-        padding: 1;
-        margin: 0 0 1 0;
-        text-align: center;
-        # text-style: bold;
-        color: $text;
-        background: $surface;
-        dock: bottom;
-    }
-
-    Input {
-        margin: 1;
-        width: 100%;
-    }
-
-    ConfirmationModal {
-        align: center middle;
-    }
-
-    #dialog {
-        padding: 1;
-        width: 60;
-        height: 60%;
-        border: thick $background 80%;
-        background: $surface;
-        grid-size: 1;
-        grid-gutter: 1;
-        grid-rows: 1fr 3;
-        align: center middle;
-    }
-
-    #button-container {
-        grid-size: 2;
-        grid-gutter: 1;
-        align: center middle;
-    }
-
-    #dialog Label {
-        color: $text;
-        text-align: center;
-        width: 100%;
-        height: auto;
-        margin-bottom: 1;
-    }
-
-    Button {
-        height: 3;
-        border: none;
-    }
-
-    .form-container {
-        # width: 100;
-        # margin-top: 2;
-        # height: auto;
-        # width: 100%;
-        # padding: 2;
-        border: tall $primary;
-        background: $surface;
-    }
-
-    .form-container Label {
-        text-align: center;
-        text-style: bold;
-        width: 100%;
-        # padding: 1;
-        # margin-bottom: 1;
-        # border-bottom: heavy $primary;
-    }
-
-    .form-container Input {
-        margin: 1 2;
-        border: tall $primary-darken-2;
-    }
-
-    .button-container {
-        layout: horizontal;
-        width: 100%;
-        height: auto;
-        align: center middle;
-        padding: 1;
-    }
-
-    .button-container Button {
-        margin: 0 1;
-    }
-    """
+    def __init__(self):
+        """Initialize the application."""
+        super().__init__()
 
     def on_mount(self) -> None:
+        """Set up the initial screen when the app starts."""
         self.push_screen(ContactList())
