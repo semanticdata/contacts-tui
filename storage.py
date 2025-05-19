@@ -1,3 +1,8 @@
+"""
+Contact storage module for Textual Contacts app.
+Handles all database operations for contacts using SQLite.
+"""
+
 import logging
 import os
 import sqlite3
@@ -13,10 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 class ContactStorage:
-    """A class to handle contact storage operations using SQLite."""
+    """
+    A class to handle contact storage operations using SQLite.
+    Provides methods to add, update, retrieve, and delete contacts.
+    """
 
     def __init__(self, db_path: Optional[str] = None):
-        """Initialize the contact storage.
+        """
+        Initialize the contact storage.
 
         Args:
             db_path: Optional path to the SQLite database file.
@@ -27,7 +36,9 @@ class ContactStorage:
         logger.info(f"Initialized contact storage at {self.db_file}")
 
     def _init_db(self) -> None:
-        """Initialize the database tables and indexes if they don't exist."""
+        """
+        Initialize the database tables and indexes if they don't exist.
+        """
         try:
             with self._get_connection() as conn:
                 # Enable foreign key support
@@ -60,7 +71,8 @@ class ContactStorage:
 
     @contextmanager
     def _get_connection(self) -> sqlite3.Connection:
-        """Context manager for database connections.
+        """
+        Context manager for database connections.
 
         Yields:
             sqlite3.Connection: A database connection
@@ -80,7 +92,8 @@ class ContactStorage:
             conn.close()
 
     def _validate_contact(self, contact: Contact) -> bool:
-        """Validate contact data before saving.
+        """
+        Validate contact data before saving.
 
         Args:
             contact: The contact to validate
@@ -106,7 +119,8 @@ class ContactStorage:
         pass
 
     def add_contact(self, contact: Contact) -> bool:
-        """Add a new contact to the database.
+        """
+        Add a new contact to the database.
 
         Args:
             contact: The contact to add
@@ -143,7 +157,8 @@ class ContactStorage:
             return False
 
     def get_all_contacts(self) -> List[Contact]:
-        """Retrieve all contacts from the database.
+        """
+        Retrieve all contacts from the database.
 
         Returns:
             List[Contact]: A list of all contacts
@@ -170,7 +185,8 @@ class ContactStorage:
             return []
 
     def get_contact_by_name(self, name: str) -> Optional[Contact]:
-        """Retrieve a contact by name (case-insensitive).
+        """
+        Retrieve a contact by name (case-insensitive).
 
         Args:
             name: The name of the contact to retrieve
@@ -206,7 +222,8 @@ class ContactStorage:
             return None
 
     def update_contact(self, name: str, updated_contact: Contact) -> bool:
-        """Update an existing contact.
+        """
+        Update an existing contact.
 
         Args:
             name: The current name of the contact to update
@@ -251,7 +268,8 @@ class ContactStorage:
             return False
 
     def delete_contact(self, name: str) -> bool:
-        """Delete a contact by name.
+        """
+        Delete a contact by name.
 
         Args:
             name: The name of the contact to delete
@@ -277,7 +295,8 @@ class ContactStorage:
             return False
 
     def check_connection(self) -> bool:
-        """Check if the database connection is healthy.
+        """
+        Check if the database connection is healthy.
 
         Returns:
             bool: True if connection is healthy, False otherwise
@@ -291,7 +310,8 @@ class ContactStorage:
             return False
 
     def backup_database(self, backup_path: str) -> bool:
-        """Create a backup of the database.
+        """
+        Create a backup of the database.
 
         Args:
             backup_path: Path where to save the backup
