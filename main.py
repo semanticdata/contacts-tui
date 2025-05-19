@@ -221,6 +221,7 @@ class ContactManager(App):
         ("s", "toggle_sidebar", "Toggle Sidebar"),
         ("a", "add_contact", "Add Contact"),
         ("e", "edit_contact", "Edit Contact"),
+        ("q", "quit_application", "Quit"),
     ]
     show_sidebar = reactive(False)
     show_add_contact = reactive(False)
@@ -300,6 +301,9 @@ class ContactManager(App):
     def _update_sidebars(self):
         self.watch_show_add_contact(self.show_add_contact)
         self.watch_show_edit_contact(self.show_edit_contact)
+
+    def action_quit_application(self) -> None:
+        self.exit()
 
 
 if __name__ == "__main__":
