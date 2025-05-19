@@ -142,39 +142,6 @@ class ContactStorage:
             logger.error(f"Failed to add contact {contact.name}: {e}")
             return False
 
-    def update_contact(self, existing_contact: Contact, updated_contact: Contact) -> bool:
-        """Update an existing contact in the database.
-
-        Args:
-            existing_contact: The contact to update
-            updated_contact: The updated contact data
-
-        Returns:
-            bool: True if contact was updated successfully, False otherwise
-        """
-        try:
-            with self._get_connection() as conn:
-                cursor = conn.execute(
-                    """
-                    UPDATE contacts 
-                    SET phone = ?, email = ?, notes = ?, last_contacted = ?, updated_at = datetime('now')
-                    WHERE name = ?
-                    """,
-                    (
-                        updated_contact.phone.strip(),
-                        updated_contact.email.strip() if updated_contact.email else None,
-                        updated_contact.notes.strip() if updated_contact.notes else None,
-                        updated_contact.last_contacted.isoformat() if updated_contact.last_contacted else None,
-                        existing_contact.name.strip(),
-                    ),
-                )
-                conn.commit()
-                logger.info(f"Updated contact: {existing_contact.name}")
-                return cursor.rowcount > 0
-        except sqlite3.Error as e:
-            logger.error(f"Failed to update contact {existing_contact.name}: {e}")
-            return False
-
     def get_all_contacts(self) -> List[Contact]:
         """Retrieve all contacts from the database.
 
