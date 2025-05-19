@@ -176,7 +176,11 @@ class ContactManager(App):
 
     """
 
-    BINDINGS = [("s", "toggle_sidebar", "Toggle Sidebar")]
+    BINDINGS = [
+        ("s", "toggle_sidebar", "Toggle Sidebar"),
+        ("a", "add_contact", "Add Contact"),
+        ("e", "edit_contact", "Edit Contact"),
+    ]
 
     show_sidebar = reactive(False)
 
@@ -192,6 +196,12 @@ class ContactManager(App):
             DataTable(id="contacts-table"),
         )
         yield Footer()
+        add_contact = AddContact(self.storage)
+        add_contact.display = False
+        yield add_contact
+        edit_contact = EditContact(self.storage, Contact(name="", phone=""))
+        edit_contact.display = False
+        yield edit_contact
 
     def on_mount(self) -> None:
         table = self.query_one("#contacts-table", DataTable)
@@ -213,6 +223,18 @@ class ContactManager(App):
     def action_toggle_sidebar(self) -> None:
         """Toggle the sidebar visibility."""
         self.show_sidebar = not self.show_sidebar
+
+    def action_add_contact(self) -> None:
+        """Show the AddContact widget"""
+        add_contact = self.query_one(AddContact)
+        add_contact.display = True
+        add_contact.scroll_visible()
+
+    def action_edit_contact(self) -> None:
+        """Show the EditContact widget"""
+        edit_contact = self.query_one(EditContact)
+        edit_contact.display = True
+        edit_contact.scroll_visible()
 
     def watch_show_sidebar(self, show_sidebar: bool) -> None:
         """Set or unset visible class when reactive changes."""
