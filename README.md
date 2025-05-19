@@ -30,6 +30,7 @@ Keyboard shortcuts:
 - `uv run ruff check --fix`: Automatically fix linting errors
 - `uv run ruff format`: Format code according to project style guide
 - `uv run ruff format --check`: Check if code is formatted according to project style guide
+- `uv run pytest tests/`: Run tests
 
 ## Implementation Details
 
@@ -54,3 +55,17 @@ Contacts are represented using Pydantic models with the following fields:
 - Loose Coupling: UI layer interacts only with the service layer
 - Cross-Platform: Unicode-safe text handling
 - Type Safety: Leverages Python's type hints and Pydantic validation
+
+## Todos and Ideas
+
+- [ ] Additional fields to contacts (e.g. location, socials)
+- [ ] Consider CSV and vCard support
+- [ ] Explore database backup options (expose this as a setting?)
+- [ ] Notifications and error messages (not just logs)
+- [ ] Tests for storage, models and UI
+- [ ] Test itnegration (add, edit, delete, list)
+- [ ] Extract widgets to separate files
+- [ ] Data and input validation
+- [ ] Search and filtering functionality
+- [ ] Sorting functionality
+- [ ] Contact duplicate handling
