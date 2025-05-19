@@ -6,7 +6,7 @@ Defines the Contact data structure using Pydantic.
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 
 class Contact(BaseModel):
@@ -20,7 +20,11 @@ class Contact(BaseModel):
         None, description="When the contact was last contacted"
     )  # Optional last contacted date
 
-    model_config = {"json_encoders": {datetime: lambda v: v.isoformat() if v else None}}
+    @field_serializer("last_contacted", when_used="json")
+    def serialize_last_contacted(self, value):
+        if value is None:
+            return None
+        return value.isoformat()
 
     @classmethod
     def from_json(cls, json_dict: dict) -> "Contact":
