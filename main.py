@@ -162,15 +162,15 @@ class EditContactSidebar(Widget):
             pass
 
     def compose(self) -> ComposeResult:
-        contact = self.contact or Contact(name="", phone="")
+        contact = self.contact
         yield Container(
             Header(),
             Vertical(
                 Label("Edit Contact"),
-                Input(id="name", value=contact.name),
-                Input(id="phone", value=contact.phone),
-                Input(id="email", value=contact.email or ""),
-                Input(id="notes", value=contact.notes or ""),
+                Input(id="name", value=contact.name if contact else ""),
+                Input(id="phone", value=contact.phone if contact else ""),
+                Input(id="email", value=contact.email if contact and contact.email else ""),
+                Input(id="notes", value=contact.notes if contact and contact.notes else ""),
                 Vertical(
                     Button("Save", variant="primary", id="save"),
                     Button("Cancel", variant="default", id="cancel"),
